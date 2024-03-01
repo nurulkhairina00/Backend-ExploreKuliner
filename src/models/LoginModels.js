@@ -1,12 +1,12 @@
 const db = require("../config/database");
+const errorHandler = require("../middleware/errorHandler");
 
-const getUserByEmail = async (email) => {
-  const sql =
-    "SELECT * FROM users WHERE user_account = $1 AND status_active = $2";
+const getUserByEmail = async (res, email) => {
   try {
-    return await db.oneOrNone(sql, [email, "Y"]);
-  } catch (err) {
-    throw new Error(`Error fetching user: ${err.message}`);
+    const sql = `SELECT * FROM reviewer WHERE email = $1 AND status_active = 'Y' AND login_google = 'N'`;
+    return await db.oneOrNone(sql, [email]);
+  } catch (error) {
+    errorHandler(res, 500, `Error fetching user: ${error.message}`);
   }
 };
 

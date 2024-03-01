@@ -1,25 +1,24 @@
 const jwt = require("jsonwebtoken");
 const LoginModels = require("../models/LoginModels");
 const errorHandler = require("../middleware/errorHandler");
-const successHandler = require("../middleware/successHandler");
 
 const login = async (req, res) => {
   try {
     const { email } = req.body;
-    const user = await LoginModels.getUserByEmail(email);
+    const user = await LoginModels.getUserByEmail(res, email);
 
     if (!user) {
-      return errorHandler(res, 401, "Email not registered");
+      return errorHandler(res, 401, "Email tidak terdaptar");
     }
 
-    const token = jwt.sign(data, config.secret, {
+    const token = jwt.sign(user, process.env.API_KEY, {
       expiresIn: "12h",
     });
+    user.token = token;
 
-    data.token = token;
-    await successHandler(res, data);
-  } catch (err) {
-    return errorHandler(res, 500, err.message || "Internal Server Error");
+    await res.status(200).json(user);
+  } catch (error) {
+    errorHandler(res, 500, `Internal Server Error: ${error.message}`);
   }
 };
 
