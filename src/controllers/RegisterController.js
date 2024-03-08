@@ -13,8 +13,14 @@ const register = async (req, res) => {
 
 const registerGoogle = async (req, res) => {
   try {
-    const { nama, email, hashedPassword } = req.body;
-    await RegisterModels.insertUserGoogle(res, nama, email, hashedPassword);
+    const { nama, email, image, hashedPassword } = req.body;
+    await RegisterModels.insertUserGoogle(
+      res,
+      nama,
+      email,
+      image,
+      hashedPassword
+    );
     res.sendStatus(200);
   } catch (error) {
     errorHandler(res, 500, `Internal Server Error: ${error.message}`);
@@ -24,7 +30,7 @@ const registerGoogle = async (req, res) => {
 const verifyRegister = async (req, res) => {
   try {
     const { token } = req.params;
-    let user = await RegisterModels.getUserToken(res, token);
+    let user = await RegisterModels.getToken(res, token);
     res.status(200).json(user);
   } catch (error) {
     errorHandler(res, 500, `Internal Server Error: ${error.message}`);
@@ -34,7 +40,7 @@ const verifyRegister = async (req, res) => {
 const verifyToken = async (req, res) => {
   try {
     const { token } = req.body;
-    await RegisterModels.updateUserToken(res, token);
+    await RegisterModels.updateToken(res, token);
     res.sendStatus(200);
   } catch (error) {
     errorHandler(res, 500, `Internal Server Error: ${error.message}`);

@@ -66,7 +66,7 @@ const insertUser = async (res, input, hashedPassword, host_url) => {
   }
 };
 
-const insertUserGoogle = async (res, nama, email, hashedPassword) => {
+const insertUserGoogle = async (res, nama, email, image, hashedPassword) => {
   try {
     const uuid = uuidv4();
     const hashedId = crypto.createHash("sha256").update(uuid).digest("hex");
@@ -76,8 +76,8 @@ const insertUserGoogle = async (res, nama, email, hashedPassword) => {
             id, 
             nama_lengkap,
             email, 
-            no_hp, 
             password, 
+            image,
             status_active, 
             status_delete, 
             login_google, 
@@ -88,7 +88,7 @@ const insertUserGoogle = async (res, nama, email, hashedPassword) => {
             'Y', 'N', 'Y', 'SELFCREATE', NOW()::timestamp
         )
         `;
-    const values = [hashedId, nama, email, null, hashedPassword];
+    const values = [hashedId, nama, email, hashedPassword, image];
     await db.none(sql, values);
     return { success: true };
   } catch (error) {
@@ -96,7 +96,7 @@ const insertUserGoogle = async (res, nama, email, hashedPassword) => {
   }
 };
 
-const getUserToken = async (res, token) => {
+const getToken = async (res, token) => {
   try {
     let checkEmail = await db.oneOrNone(
       `SELECT * FROM reviewer WHERE registration_token = $1`,
@@ -110,7 +110,7 @@ const getUserToken = async (res, token) => {
   }
 };
 
-const updateUserToken = async (res, token) => {
+const updateToken = async (res, token) => {
   try {
     const sql = `
       UPDATE reviewer
@@ -174,6 +174,6 @@ const sendmail = (data_applicant, host) => {
 module.exports = {
   insertUser,
   insertUserGoogle,
-  getUserToken,
-  updateUserToken,
+  getToken,
+  updateToken,
 };

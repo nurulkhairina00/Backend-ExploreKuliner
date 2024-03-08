@@ -10,7 +10,7 @@ const checkToken = (req, res, next) => {
   if (!token)
     return errorHandler(res, 401, "Unauthorized - Token not provided");
 
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, user) => {
+  jwt.verify(token, process.env.API_KEY, (error, user) => {
     if (error) return errorHandler(res, 403, "Forbidden - Invalid token");
     req.user = user;
     next();

@@ -1,7 +1,7 @@
 const db = require("../config/database");
 const errorHandler = require("../middleware/errorHandler");
 
-const getUserByEmail = async (res, email) => {
+const getLoginByEmail = async (res, email) => {
   try {
     const sql = `SELECT * FROM reviewer WHERE email = $1 AND login_google = 'N'`;
     return await db.oneOrNone(sql, [email]);
@@ -10,7 +10,7 @@ const getUserByEmail = async (res, email) => {
   }
 };
 
-const getUserByEmailGoogle = async (res, email) => {
+const getLoginByEmailGoogle = async (res, email) => {
   try {
     const sql = `SELECT * FROM reviewer WHERE email = $1`;
     return await db.oneOrNone(sql, [email]);
@@ -20,6 +20,6 @@ const getUserByEmailGoogle = async (res, email) => {
 };
 
 module.exports = {
-  getUserByEmail,
-  getUserByEmailGoogle,
+  getLoginByEmail,
+  getLoginByEmailGoogle,
 };

@@ -5,7 +5,7 @@ const errorHandler = require("../middleware/errorHandler");
 const login = async (req, res) => {
   try {
     const { email } = req.body;
-    const user = await LoginModels.getUserByEmail(res, email);
+    const user = await LoginModels.getLoginByEmail(res, email);
 
     if (!user) {
       return errorHandler(res, 401, "Email tidak terdaptar");
@@ -25,7 +25,7 @@ const login = async (req, res) => {
 const checkGoogle = async (req, res) => {
   try {
     const { email } = req.body;
-    const user = await LoginModels.getUserByEmailGoogle(res, email);
+    const user = await LoginModels.getLoginByEmailGoogle(res, email);
     await res.status(200).json(user);
   } catch (error) {
     errorHandler(res, 500, `Internal Server Error: ${error.message}`);
@@ -35,7 +35,7 @@ const checkGoogle = async (req, res) => {
 const loginGoogle = async (req, res) => {
   try {
     const { email } = req.body;
-    const user = await LoginModels.getUserByEmailGoogle(res, email);
+    const user = await LoginModels.getLoginByEmailGoogle(res, email);
 
     if (user) {
       const token = jwt.sign(user, process.env.API_KEY, {
