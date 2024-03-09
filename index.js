@@ -7,7 +7,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(
+  "/public/images/profile/",
+  express.static(__dirname + "/public/images/profile/")
+);
 app.use("/api/v1", routes);
 
 app.listen(5000, () =>
