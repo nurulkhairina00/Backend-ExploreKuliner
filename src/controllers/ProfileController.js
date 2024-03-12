@@ -35,12 +35,12 @@ const getUserById = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    await cpUpload(req, res, async (err) => {
+    await cpUpload(req, res, async (error) => {
       const input = JSON.parse(req.body.input);
-      if (err) {
+      if (error) {
         return res
           .status(400)
-          .json({ error: `Error uploading file: ${err.message}` });
+          .json({ error: `Error uploading file: ${error.message}` });
       }
       await ProfileModels.updateProfile(req, res, input);
       res.sendStatus(200);
